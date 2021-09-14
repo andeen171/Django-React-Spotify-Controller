@@ -1,5 +1,5 @@
 """
-ASGI config for spotify_controller project.
+ASGI config for Spotify_Controller project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'spotify_controller.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Spotify_Controller.settings')
 
 application = get_asgi_application()

@@ -6,7 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'spotify_controller.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Spotify_Controller.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
