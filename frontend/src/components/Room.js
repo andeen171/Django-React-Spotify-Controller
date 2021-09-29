@@ -10,17 +10,19 @@ export default class Room extends Component {
             guest_can_pause: false,
             is_host: false,
             show_setting: false,
+            spotify_authenticated: false,
         };
         this.RoomCode = this.props.match.params.RoomCode;
         this.getRoomDetails();
-        this.leaveButtonPressed = this.leaveButtonPressed.bind(this)
-        this.updateShowSetting = this.updateShowSetting.bind(this)
-        this.renderSettings = this.renderSettings.bind(this)
-        this.renderSettingsButton = this.renderSettingsButton.bind(this)
-        this.getRoomDetails = this.getRoomDetails.bind(this)
+        this.leaveButtonPressed = this.leaveButtonPressed.bind(this);
+        this.updateShowSetting = this.updateShowSetting.bind(this);
+        this.renderSettings = this.renderSettings.bind(this);
+        this.renderSettingsButton = this.renderSettingsButton.bind(this);
+        this.getRoomDetails = this.getRoomDetails.bind(this);
+        this.authenticateSpotify = this.authenticateSpotify.bind(this);
         this.getRoomDetails();
-
     }
+
     getRoomDetails() {
         fetch('/api/get-room?code=' + this.RoomCode).then((response) => {
             if (!response.ok) {
@@ -35,7 +37,25 @@ export default class Room extends Component {
                     guest_can_pause: data.guest_can_pause,
                     is_host: data.is_host
                 });
+                if (this.state.is_host) {
+                    console.log('getRoomDetails')
+                    this.authenticateSpotify();
+                }
             });
+    }
+    authenticateSpotify() {
+        console.log('authenticateSpotify')
+        fetch('/spotify/is-authenticated').then((_response) => _response.json()).then((data) => {
+            this.setState({ spotifyAuthenticated: data.status });
+            console.log(data.status);
+            if (!data.status) {
+                fetch('/spotify/get-auth-url')
+                    .then((response) => response.json())
+                    .then((data) => {
+                        window.location.replace(data.url);
+                    })
+            }
+        });
     }
     leaveButtonPressed() {
         const requestOptions = {
@@ -69,9 +89,10 @@ export default class Room extends Component {
                 <Grid item xs={12} align="center">
                     <CreateRoomPage
                         update={true}
-                        votesToSkip={this.state.votesToSkip}
-                        guestCanPause={this.state.guestCanPause}
-                        roomCode={this.roomCode}
+                        votesToSkip={this.state.votes_to_skip}
+                        guestCanPause={this.state.guest_can_pause}
+                        roomCode={this.RoomCode}
+                        updateCallback={this.getRoomDetails}
                       />
                 </Grid>
                 <Grid item xs={12} align="center">
@@ -85,7 +106,6 @@ export default class Room extends Component {
 
     render() {
         if (this.state.show_setting) {
-            console.log("chego no if")
             return this.renderSettings();
         }
         return (

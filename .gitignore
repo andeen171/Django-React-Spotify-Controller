@@ -168,4 +168,4 @@ sketch
 .idea
 Pipfile
 Pipfile.lock
-
+spotify/migrations/*

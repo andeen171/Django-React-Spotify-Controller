@@ -85,12 +85,13 @@ class UserInRoom(APIView):
 class LeaveRoom(APIView):
     def post(self, request):
         if 'room_code' in self.request.session:
-            code = self.request.session.pop('room_code')
-            room_results = Room.objects.filter(code=code)
-            if room_results.exists():
+            self.request.session.pop('room_code')
+            host_id = self.request.session.session_key
+            room_results = Room.objects.filter(host=host_id)
+            if len(room_results) > 0:
                 room = room_results[0]
                 room.delete()
-        return Response({'message': 'Sucess'}, status=status.HTTP_200_OK)
+            return Response({'message': 'Sucess'}, status=status.HTTP_200_OK)
 
 
 class UpdateRoom(APIView):
