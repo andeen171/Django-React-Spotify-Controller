@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Button, Typography } from '@material-ui/core';
 import CreateRoomPage from "./CreateRoomPage";
 import MusicPlayer from "./MusicPlayer";
+import {Link} from "react-router-dom";
 
 
 export default class Room extends Component {
@@ -87,7 +88,6 @@ export default class Room extends Component {
         };
         fetch('/api/leave-room/', requestOptions).then((_response) => {
             this.props.leaveRoomCallback();
-            this.props.history.push("/");
         });
     }
     updateShowSetting(value) {
@@ -139,7 +139,7 @@ export default class Room extends Component {
                 <MusicPlayer {...this.state.song}/>
                 {this.state.is_host ? this.renderSettingsButton() : null}
                 <Grid item xs={12} align="center">
-                    <Button variant="contained" color="secondary" onClick={this.leaveButtonPressed}>
+                    <Button variant="contained" color="secondary" onClick={this.leaveButtonPressed} to="/" component={Link}>
                         Leave Room
                     </Button>
                 </Grid>
