@@ -1,2 +1,2 @@
 # Django-React-Spotify-Controller
- Web aplication to control your spotify by it api using django rest api back end  and fully responsive front end in react.js
+Online room to let your friends listen to the same music as you in spotify, using django rest api back end  and fully responsive front end in react
